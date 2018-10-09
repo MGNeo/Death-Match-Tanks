@@ -18,17 +18,17 @@ void init_and_load(void)
     }
 
     // Инициализируем все системы.
-    init_system();
+    system_init();
 
     // Загружаем шрифт.
-    load_font();
+    font_load();
 
     // Загружаем текстуры.
-    load_textures();
+    textures_load();
 
     // Загружаем звуки.
-    load_sounds();
+    sounds_load();
 
     // Загружаем карту.
-    load_map();
+    map_load();
 }

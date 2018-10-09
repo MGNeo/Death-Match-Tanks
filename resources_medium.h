@@ -11,14 +11,14 @@
 #ifndef RESOURCES_MEDIUM_H
 #define RESOURCES_MEDIUM_H
 
-void init_system(void);
+void system_init(void);
 
-void load_font(void);
+void font_load(void);
 
-void load_textures(void);
+void textures_load(void);
 
-void load_sounds(void);
+void sounds_load(void);
 
-void load_map(void);
+void map_load(void);
 
 #endif

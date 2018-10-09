@@ -582,7 +582,7 @@
 1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\tank.h
 	"direction.h"
 
-1539062198 source:c:\users\nb529\desktop\death match tanks 09.10.2018\game.c
+1539082497 source:c:\users\nb529\desktop\death match tanks 09.10.2018\game.c
 	<SDL_timer.h>
 	<time.h>
 	<stdlib.h>
@@ -611,11 +611,11 @@
 
 1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\cell.h
 
-1539062198 c:\users\nb529\desktop\death match tanks 09.10.2018\processing.h
+1539083868 c:\users\nb529\desktop\death match tanks 09.10.2018\processing.h
 	<SDL.h>
 	"direction.h"
 
-1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\draw.h
+1539083757 c:\users\nb529\desktop\death match tanks 09.10.2018\draw.h
 	"cell.h"
 	"text.h"
 
@@ -642,7 +642,7 @@
 	<math.h>
 	"player.h"
 
-1539063022 source:c:\users\nb529\desktop\death match tanks 09.10.2018\processing.c
+1539084426 source:c:\users\nb529\desktop\death match tanks 09.10.2018\processing.c
 	<math.h>
 	<stdlib.h>
 	<memory.h>
@@ -680,7 +680,7 @@
 1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\score.h
 	<stdlib.h>
 
-1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_high.c
+1539083310 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_high.c
 	<stdlib.h>
 	<stddef.h>
 	<limits.h>
@@ -688,12 +688,12 @@
 	"resources_medium.h"
 	"crash.h"
 
-1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.h
+1539083899 c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.h
 
-1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_low.c
+1539083330 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_low.c
 	"resources_low.h"
 
-1539061888 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.c
+1539083635 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.c
 	<stdlib.h>
 	<stdio.h>
 	<SDL_ttf.h>
@@ -708,7 +708,7 @@
 1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\score.c
 	"score.h"
 
-1539059377 source:c:\users\nb529\desktop\death match tanks 09.10.2018\draw.c
+1539084038 source:c:\users\nb529\desktop\death match tanks 09.10.2018\draw.c
 	<stdlib.h>
 	<SDL.h>
 	<string.h>

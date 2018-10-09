@@ -21,11 +21,11 @@
 #include "curtain.h"
 
 // Рисование игрока и врага - это рисование танка.
-static void draw_tank(const tank *const _tank,
+static void tank_draw(const tank *const _tank,
                       SDL_Texture *const _texture);
 
 // Рисование индикатора.
-static void draw_indicator(const float _x,
+static void indicator_draw(const float _x,
                            const float _y,
                            const float _cvalue,
                            const float _mvalue,
@@ -36,14 +36,14 @@ static void draw_indicator(const float _x,
 
 // Обрабатывает отрисовку игрока.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_player(void)
+void player_draw(void)
 {
-    draw_tank(&player, texture_player);
+    tank_draw(&player, texture_player);
 }
 
 // Рисует врагов.
 // В случае ошибки показывается информацию о причине сбоя и крашит программу.
-void draw_enemies(void)
+void enemies_draw(void)
 {
     if (enemies_count == 0)
     {
@@ -54,14 +54,14 @@ void draw_enemies(void)
     {
         if (enemies[i].active == 1)
         {
-            draw_tank(&enemies[i], texture_enemy);
+            tank_draw(&enemies[i], texture_enemy);
         }
     }
 }
 
 // Рисует карту - клетки заданного типа.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_map(const cell_state _state)
+void map_draw(const cell_state _state)
 {
     SDL_Rect rect;
 
@@ -113,7 +113,7 @@ void draw_map(const cell_state _state)
 
                 if (SDL_RenderCopyEx(renderer, texture, NULL, &rect, 0, NULL, SDL_FLIP_NONE) != 0)
                 {
-                    crash("map_draw(), не удалось отрендерить текстуру\nSDL_GetError() : %s",
+                    crash("map_draw(), не удалось отрисовать текстуру\nSDL_GetError() : %s",
                           SDL_GetError());
                 }
             }
@@ -123,7 +123,7 @@ void draw_map(const cell_state _state)
 
 // Рисует все активные пули.
 // В случае ошибки сообщает информацию о причине сбоя и крашит программу.
-void draw_bullets(void)
+void bullets_draw(void)
 {
     if (bullets_count == 0)
     {
@@ -153,7 +153,7 @@ void draw_bullets(void)
 // Рисует нуль-терменированную строку в виде однострочного текста.
 // Нультерминатор ресуется, если вдруг для него существует текстура.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_text(const char *const _text,
+void text_draw(const char *const _text,
                const int _x,
                const int _y,
                const text_align _align)
@@ -196,7 +196,7 @@ void draw_text(const char *const _text,
                     rect.w = glyphs[glyph_index].w;
                     if (SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect) != 0)
                     {
-                        crash("draw_text(), SDL_RenderCopy() != 0\nSDL_GetError() : %s",
+                        crash("text_draw(), не удалось отрисовать глиф при выводе текста с левым выравниванием\nSDL_GetError() : %s",
                               SDL_GetError());
                     }
 
@@ -227,7 +227,7 @@ void draw_text(const char *const _text,
 
                     if (SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect) != 0)
                     {
-                        crash("draw_text(), SDL_RenderCopy() != 0\nSDL_GetError() : %s",
+                        crash("text_draw(), не удалось отрисовать глиф при выводе текста с правым выравниванием\nSDL_GetError() : %s",
                               SDL_GetError());
                     }
                 }
@@ -264,7 +264,11 @@ void draw_text(const char *const _text,
                 {
                     rect.h = glyphs[glyph_index].h;
                     rect.w = glyphs[glyph_index].w;
-                    SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect);
+                    if (SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect) != 0)
+                    {
+                        crash("text_draw(), не удалось отрисовать глиф при выводе текста с центральным выравниванием\nSDL_GetError() : %s",
+                              SDL_GetError());
+                    }
 
                     rect.x += glyphs[glyph_index].w;
                 }
@@ -282,10 +286,10 @@ void draw_text(const char *const _text,
 
 // Рисует индикаторы прочности и перезарядки игрока и врагов.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_indicators(void)
+void indicators_draw(void)
 {
     // Рисуем индикатор прочности игрока.
-    draw_indicator(player.x,
+    indicator_draw(player.x,
                    player.y - 2 * INDICATOR_HEIGHT,
                    player.hp,
                    MAX_HEALTH,
@@ -294,7 +298,7 @@ void draw_indicators(void)
                    0,
                    255);
     // Рисуем индикатор перезарядки игрока.
-    draw_indicator(player.x,
+    indicator_draw(player.x,
                    player.y - INDICATOR_HEIGHT + 1,
                    SHOT_CD - player.c,
                    SHOT_CD,
@@ -310,7 +314,7 @@ void draw_indicators(void)
             if (enemies[e].active == 1)
             {
                 // Рисуем индикатор прочности врага.
-                draw_indicator(enemies[e].x,
+                indicator_draw(enemies[e].x,
                                enemies[e].y - 2 * INDICATOR_HEIGHT,
                                enemies[e].hp,
                                MAX_HEALTH,
@@ -319,7 +323,7 @@ void draw_indicators(void)
                                0,
                                255);
                 // Рисуем индикатор перезарядки врага.
-                draw_indicator(enemies[e].x,
+                indicator_draw(enemies[e].x,
                                enemies[e].y - INDICATOR_HEIGHT + 1,
                                SHOT_CD - enemies[e].c,
                                SHOT_CD,
@@ -334,16 +338,17 @@ void draw_indicators(void)
 
 // Рисует танк.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_tank(const tank *const _tank, SDL_Texture *const _texture)
+void tank_draw(const tank *const _tank,
+               SDL_Texture *const _texture)
 {
     if (_tank == NULL)
     {
-        crash("draw_tank(), _tank == NULL");
+        crash("tank_draw(), _tank == NULL");
     }
 
     if (_texture == NULL)
     {
-        crash("draw_tank(), _texture == NULL");
+        crash("tank_draw(), _texture == NULL");
     }
 
     SDL_Rect rect;
@@ -364,7 +369,7 @@ void draw_tank(const tank *const _tank, SDL_Texture *const _texture)
 
 // Рисует индикатор заданного цвета в заданной точке.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_indicator(const float _x,
+void indicator_draw(const float _x,
                     const float _y,
                     const float _cvalue,
                     const float _mvalue,
@@ -376,13 +381,13 @@ void draw_indicator(const float _x,
     // Пытаемся задать цвет полоски индикатора.
     if (SDL_SetRenderDrawColor(renderer, _r, _g, _b, _a) != 0)
     {
-        crash("draw_indicator(), не удалось задать цвет полоски индикатора\nSDL_getError() : %s",
+        crash("indicator_draw(), не удалось задать цвет полоски индикатора\nSDL_getError() : %s",
               SDL_GetError());
     }
 
     if (_mvalue == 0.f)
     {
-        crash("draw_indicator(), _mvalue == 0.f");
+        crash("indicator_draw(), _mvalue == 0.f");
     }
 
     SDL_Rect rect;
@@ -396,14 +401,14 @@ void draw_indicator(const float _x,
     // Пытаемся нарисовать полоску.
     if (SDL_RenderFillRect(renderer, &rect) != 0)
     {
-        crash("draw_indicator(), не удалось нарисовать полоску индикатора\nSDL_GetError() : %s",
+        crash("indicator_draw(), не удалось нарисовать полоску индикатора\nSDL_GetError() : %s",
               SDL_GetError());
     }
 }
 
 // Рисует эффекты.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_effects(void)
+void effects_draw(void)
 {
     if (effects_count == 0)
     {
@@ -427,7 +432,7 @@ void draw_effects(void)
 
             if (SDL_SetTextureAlphaMod(effects[e].texture, effects[e].alpha + 0.5f) != 0)
             {
-                crash("draw_effects(), SDL_SetTextureAlphaMod() != 0\nSDL_GetError() % s",
+                crash("effects_draw(), SDL_SetTextureAlphaMod() != 0\nSDL_GetError() % s",
                       SDL_GetError());
             }
 
@@ -439,7 +444,7 @@ void draw_effects(void)
                                  NULL,
                                  SDL_FLIP_NONE) != 0)
             {
-                crash("draw_effects(), не удалось нарисовать эффект\nSDL_GetError() : %i",
+                crash("effects_draw(), не удалось нарисовать эффект\nSDL_GetError() : %i",
                       SDL_GetError());
             }
         }
@@ -448,23 +453,23 @@ void draw_effects(void)
 
 // Отображает счет.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_score(void)
+void score_draw(void)
 {
     char text[1024];
     if (sprintf(text, "Очки: %Iu", score) < 0)
     {
-        crash("draw_score(), sprintf() < 0\nerrno() : %i",
+        crash("score_draw(), sprintf() < 0\nerrno() : %i",
               errno);
     }
 
-    draw_text(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 44, TA_CENTER);
+    text_draw(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 44, TA_CENTER);
 }
 
 // Рисует приветствие.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_hello(void)
+void hello_draw(void)
 {
-    draw_text("Death Match Tanks",
+    text_draw("Death Match Tanks",
               SCREEN_WIDTH / 2,
               SCREEN_HEIGHT / 2 - 11,
               TA_CENTER);
@@ -476,7 +481,7 @@ void draw_hello(void)
         crash("draw_hello(), sprintf() < 0\nerrno() : %i",
               errno);
     }
-    draw_text(text,
+    text_draw(text,
               SCREEN_WIDTH / 2,
               SCREEN_HEIGHT - 64,
               TA_CENTER);
@@ -484,7 +489,7 @@ void draw_hello(void)
 
 // Рисует занавес.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_curtain(void)
+void curtain_draw(void)
 {
     SDL_Rect rect;
     rect.x = 0;
@@ -494,35 +499,35 @@ void draw_curtain(void)
 
     if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, curtain) != 0)
     {
-        crash("draw_curtain(), не удалось установить цвет заливки занавеса\nSDL_GetError() : %s",
+        crash("curtain_draw(), не удалось установить цвет заливки занавеса\nSDL_GetError() : %s",
               SDL_GetError());
     }
 
     if (SDL_RenderFillRect(renderer, &rect) != 0)
     {
-        crash("draw_curtain(), не удалось отрисовать занавес\nSDL_GetError() : %s",
+        crash("curtain_draw(), не удалось отрисовать занавес\nSDL_GetError() : %s",
               SDL_GetError());
     }
 }
 
 // Рисует статистику.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void draw_statistics(void)
+void statistics_draw(void)
 {
     char text[1024];
     if (sprintf(text, "Ваш результат: %Iu", score) < 0)
     {
-        crash("draw_statistics(), sprintf() < 0\nerrno() : %i",
+        crash("statistics_draw(), sprintf() < 0\nerrno() : %i",
               errno);
     }
-    draw_text(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 22, TA_CENTER);
+    text_draw(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 22, TA_CENTER);
 
     if (sprintf(text, "Для начала боя нажмите \"Enter\", для выхода нажмите \"Escape\"") < 0)
     {
-        crash("draw_statistics(), sprintf() < 0\nerrno() : %i",
+        crash("statistics_draw(), sprintf() < 0\nerrno() : %i",
               errno);
     }
-    draw_text(text,
+    text_draw(text,
               SCREEN_WIDTH / 2,
               SCREEN_HEIGHT - 64,
               TA_CENTER);

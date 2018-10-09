@@ -12,28 +12,28 @@
 
 // Загружает текстуру из файла и записывает ее адрес в заданное расположение.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void load_texture(const char *const _file_name,
+static void texture_load(const char *const _file_name,
                          SDL_Texture **const _texture)
 {
     if (_file_name == NULL)
     {
-        crash("load_texture(), _file_name == NULL");
+        crash("textures_load(), _file_name == NULL");
     }
 
     if (strlen(_file_name) == 0)
     {
-        crash("load_texture(), strlen(_file_name) == 0");
+        crash("textures_load(), strlen(_file_name) == 0");
     }
 
     if (_texture == NULL)
     {
-        crash("load_texture(), _texture == NULL");
+        crash("textures_load(), _texture == NULL");
     }
 
     SDL_Surface *h_surface = SDL_LoadBMP(_file_name);
     if (h_surface == NULL)
     {
-        crash("load_texture(), не удалось создать поверхность на основе файла: %s\nSDL_GetError() : %s",
+        crash("textures_load(), не удалось создать поверхность на основе файла: %s\nSDL_GetError() : %s",
               _file_name,
               SDL_GetError());
     }
@@ -41,7 +41,7 @@ static void load_texture(const char *const _file_name,
     SDL_Texture *h_texture = SDL_CreateTextureFromSurface(renderer, h_surface);
     if (h_texture == NULL)
     {
-        crash("load_texture(), не удалось создать текстуру на основе поверхности\nSDL_GetError() : %s",
+        crash("textures_load(), не удалось создать текстуру на основе поверхности\nSDL_GetError() : %s",
               SDL_GetError());
     }
 
@@ -52,56 +52,56 @@ static void load_texture(const char *const _file_name,
 
 // Загружает звук из файла.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void load_sound_from_file(const char *const _file_name,
-                                 Mix_Chunk **const _sound)
+static void sound_load(const char *const _file_name,
+                       Mix_Chunk **const _sound)
 {
     if (_file_name == NULL)
     {
-        crash("load_sound_from_file(), _file_name == NULL");
+        crash("sound_load(), _file_name == NULL");
     }
     if (_sound == NULL)
     {
-        crash("load_sound_from_file(), _sound == NULL");
+        crash("sound_load(), _sound == NULL");
     }
 
     *_sound = Mix_LoadWAV(_file_name);
 
     if (*_sound == NULL)
     {
-        crash("load_sound_from_file(), не удалось загрузить звук\nMix_GetError() : %s",
+        crash("sound_load(), не удалось загрузить звук\nMix_GetError() : %s",
               Mix_GetError());
     }
 }
 
 // Инициализирует все системы.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void init_system(void)
+void system_init(void)
 {
     // Защита от повторного вызова.
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("init_system(), произошла попытка повторной инициализации всех систем");
+        crash("system_init(), произошла попытка повторной инициализации всех систем");
     }
 
     // Инициализация SDL.
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
-        crash("init_system(), не удалось инициализировать SDL\nSDL_Init() != 0\nSDL_GetError() : %s",
+        crash("system_init(), не удалось инициализировать SDL\nSDL_Init() != 0\nSDL_GetError() : %s",
               SDL_GetError());
     }
 
     // Инициализация SDL_ttf.
     if (TTF_Init() != 0)
     {
-        crash("init_system(), не удалось инициализировать SDL_ttf\nTTF_Init() != 0\nTTF_GetError() : %s",
+        crash("system_init(), не удалось инициализировать SDL_ttf\nTTF_Init() != 0\nTTF_GetError() : %s",
               TTF_GetError());
     }
 
     // Инициализация SDL_mixer.
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 128) != 0)
     {
-        crash("init_system(), не удалось инициализировать SDL_mixer\nMix_OpenAudio() != 0\nMix_GetError() : %s",
+        crash("system_init(), не удалось инициализировать SDL_mixer\nMix_OpenAudio() != 0\nMix_GetError() : %s",
               Mix_GetError());
     }
 
@@ -116,34 +116,34 @@ void init_system(void)
                               SDL_WINDOW_FULLSCREEN);
     if (window == NULL)
     {
-        crash("init_system(), не удалось создать окно\nSDL_GetError() : %s",
+        crash("system_init(), не удалось создать окно\nSDL_GetError() : %s",
               SDL_GetError());
     }
     // Создание рендерера.
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);// SDL_RENDERER_PRESENTVSYNCd
     if (renderer == NULL)
     {
-        crash("init_system(), не удалось создать рендер\nSDL_GetError() : %s",
+        crash("system_init(), не удалось создать рендер\nSDL_GetError() : %s",
               SDL_GetError());
     }
 }
 
 // Загружает шрифт.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void load_font(void)
+void font_load(void)
 {
     // Защита от повторного вызова.
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("load_font(), произошла попытка повторной загрузки шрифта");
+        crash("system_init(), произошла попытка повторной загрузки шрифта");
     }
 
     // Загрузим шрифт.
     TTF_Font *h_font = TTF_OpenFont("font/font.ttf", 22);
     if (h_font == NULL)
     {
-        crash("load_font(), не удалось загрузить шрифт\nTTF_GetError() : %s",
+        crash("system_init(), не удалось загрузить шрифт\nTTF_GetError() : %s",
               TTF_GetError());
     }
 
@@ -163,13 +163,13 @@ void load_font(void)
                                                1);
         if (unicode_char[1] != 0)
         {
-            crash("load_font(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
+            crash("system_init(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
                   ansi_char);
         }
 
         if (r_code != 1)
         {
-            crash("load_font(), не удалось преобразовать символ из cp1251 в unicode\nGetLastError() : %lu",
+            crash("system_init(), не удалось преобразовать символ из cp1251 в unicode\nGetLastError() : %lu",
                   GetLastError());
         }
 
@@ -192,7 +192,7 @@ void load_font(void)
             SDL_Texture *h_texture = SDL_CreateTextureFromSurface(renderer, h_surface);
             if (h_texture == NULL)
             {
-                crash("load_font(), не удалось создать текстуру на основе поверхности с символом\nSDL_GetError() : %s",
+                crash("system_init(), не удалось создать текстуру на основе поверхности с символом\nSDL_GetError() : %s",
                       SDL_GetError());
             }
 
@@ -209,90 +209,90 @@ void load_font(void)
 
 // Загружает все необходимые текстуры.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void load_textures(void)
+void textures_load(void)
 {
     // Защита от повторного вызова.
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("load_textures(), произошла попытка повторной загрузки текстур");
+        crash("textures_load(), произошла попытка повторной загрузки текстур");
     }
 
     // Текстура игрока.
-    load_texture("textures/player.bmp", &texture_player);
+    texture_load("textures/player.bmp", &texture_player);
 
     // Текстура врага.
-    load_texture("textures/enemy.bmp", &texture_enemy);
+    texture_load("textures/enemy.bmp", &texture_enemy);
 
     // Текстура стены.
-    load_texture("textures/wall.bmp", &texture_wall);
+    texture_load("textures/wall.bmp", &texture_wall);
 
     // Текстура дерева.
-    load_texture("textures/tree.bmp", &texture_tree);
+    texture_load("textures/tree.bmp", &texture_tree);
 
     // Текстура воды.
-    load_texture("textures/water.bmp", &texture_water);
+    texture_load("textures/water.bmp", &texture_water);
 
     // Текстура ремонта.
-    load_texture("textures/repair.bmp", &texture_repair);
+    texture_load("textures/repair.bmp", &texture_repair);
 
     // Текстура пули.
-    load_texture("textures/bullet.bmp", &texture_bullet);
+    texture_load("textures/bullet.bmp", &texture_bullet);
 
     // Текстура вспышки.
-    load_texture("textures/flush.bmp", &texture_flush);
+    texture_load("textures/flush.bmp", &texture_flush);
 
     // Текстура дыма.
-    load_texture("textures/smoke.bmp", &texture_smoke);
+    texture_load("textures/smoke.bmp", &texture_smoke);
 
     // Текстура захватывания.
-    load_texture("textures/capture.bmp", &texture_capture);
+    texture_load("textures/capture.bmp", &texture_capture);
 
 }
 
 // Загружает все необходимые звуки.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void load_sounds(void)
+void sounds_load(void)
 {
     // Защита от повторного вызова.
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("load_sounds(), произошла попытка повторной загрузки звуков");
+        crash("sounds_load(), произошла попытка повторной загрузки звуков");
     }
 
     // Звук выстрела.
-    load_sound_from_file("sounds/shot.wav", &sound_shot);
+    sound_load("sounds/shot.wav", &sound_shot);
 
     // Звук попадания в стену.
-    load_sound_from_file("sounds/hit_to_wall.wav", &sound_hit_to_wall);
+    sound_load("sounds/hit_to_wall.wav", &sound_hit_to_wall);
 
     // Звук попадания во врага.
-    load_sound_from_file("sounds/hit_to_enemy.wav", &sound_hit_to_enemy);
+    sound_load("sounds/hit_to_enemy.wav", &sound_hit_to_enemy);
 
     // Звук попадания в игрока.
-    load_sound_from_file("sounds/hit_to_player.wav", &sound_hit_to_player);
+    sound_load("sounds/hit_to_player.wav", &sound_hit_to_player);
 
     // Звук взятия бонуса.
-    load_sound_from_file("sounds/repair.wav", &sound_repair);
+    sound_load("sounds/repair.wav", &sound_repair);
 }
 
 // Загружает карту.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void load_map(void)
+void map_load(void)
 {
     // Защита от повторного вызова.
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("load_map(), произошла попытка повторной загрузки карты");
+        crash("map_load(), произошла попытка повторной загрузки карты");
     }
 
     FILE *f = fopen("map/map.txt", "r");
 
     if (f == NULL)
     {
-        crash("load_map(), не удалось загрузить карту\n%s",
+        crash("map_load(), не удалось загрузить карту\n%s",
               strerror(errno));
     }
 
@@ -308,7 +308,7 @@ void load_map(void)
             {
                 if (c != '#')
                 {
-                    crash("load_map(), карта должна быть окружена стеной");
+                    crash("map_load(), карта должна быть окружена стеной");
                 }
             }
 
@@ -341,7 +341,7 @@ void load_map(void)
                 }
                 default:
                 {
-                    crash("load_map(), файл карты поврежден");
+                    crash("map_load(), файл карты поврежден");
                 }
             }
         }
@@ -349,7 +349,7 @@ void load_map(void)
         const int c = getc(f);
         if (c !=  '\n')
         {
-            crash("load_map(), файл карты поврежден");
+            crash("map_load(), файл карты поврежден");
         }
     }
 
@@ -359,19 +359,19 @@ void load_map(void)
          (map_template[MAP_WIDTH - 2][MAP_HEIGHT - 2] != CS_EMPTY) ||
          (map_template[1][MAP_HEIGHT - 2] != CS_EMPTY) )
     {
-        crash("load_map(), углы карты возле стены должны быть пустыми, там появляются враги");
+        crash("map_load(), углы карты возле стены должны быть пустыми, там появляются враги");
     }
 
     // Центр карты (приблизительный) должен быть пуст - там появляется игрок.
     if ( map_template[MAP_WIDTH / 2][MAP_HEIGHT / 2] != CS_EMPTY)
     {
-        crash("load_map(), центр карты должен быть пустым, там появляется игрок");
+        crash("map_load(), центр карты должен быть пустым, там появляется игрок");
     }
 
     const int r_code = fclose(f);
     if (r_code == EOF)
     {
-        crash("load_map(), не удалось закрыть файл с картой\n%s",
+        crash("map_load(), не удалось закрыть файл с картой\n%s",
               strerror(errno));
     }
 }

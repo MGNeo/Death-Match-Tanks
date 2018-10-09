@@ -21,84 +21,84 @@
 #include "curtain.h"
 
 // Добавляет любой эффект.
-static void add_effect(const float _x,
+static void effect_add(const float _x,
                        const float _y,
                        const float _angle,
                        const float _alpha,
                        const float _d_angle,
                        const float _d_alpha,
-                       const SDL_Texture *const _texture);
+                       SDL_Texture *const _texture);
 
 // Добавляет эффект дыма.
-static void add_effect_smoke(const float _x,
+static void effect_add_smoke(const float _x,
                              const float _y);
 // Добавляет эффект вспышки.
-static void add_effect_flush(const float _x,
+static void effect_add_flush(const float _x,
                              const float _y);
 // Добавляет эффект захвата.
-static void add_effect_capture(const float _x,
+static void effect_add_capture(const float _x,
                                const float _y);
 
 // Добавляет эффекты взрыва танка.
-static void add_effects_tank_explode(const tank *const _tank);
+static void effect_add_explode(const tank *const _tank);
 
 // Добавляет пулю, размещая ее на кончике дула танка.
-static void add_bullet(const tank *const _tank,// x, y, damage, direction и пр.
+static void bullet_add(const tank *const _tank,
                        const owner _owner);
 
 // Обработка движения игрока и врага - это обработка движения танка.
-static void move_tank(tank *const _tank, const float _dt);
+static void tank_move(tank *const _tank, const float _dt);
 // Обработка перезарядки игрока и врага - это обработка перезарядки танка.
-static void recharge_tank(tank *const _tank, const float _dt);
+static void tank_recharge(tank *const _tank, const float _dt);
 // Обработка сбора ремонтных наборов игроком и врагом - это обработка сбора ремонтных наборов танком.
-static void repair_tank(tank *const _tank);
+static void tank_repair(tank *const _tank);
 
 // Обработка управления игроком.
-static void control_player(const Uint8 *const _keys);
+static void player_control(const Uint8 *const _keys);
 // Обработка стрельбы игроком.
-static void shoot_player(const Uint8 *const _keys);
+static void player_shoot(const Uint8 *const _keys);
 
 // Обработка управления врагом.
-static void control_enemy(tank *const _enemy);
+static void enemy_control(tank *const _enemy);
 // Обработка стрельбы врагом.
-static void shoot_enemy(tank *const _enemy);
+static void enemy_shoot(tank *const _enemy);
 
 // Обработка попадания пули.
-static void hit_bullet(bullet *const _bullet);
+static void bullet_hit(bullet *const _bullet);
 // Обработка движения пули.
-static void move_bullet(bullet *const _bullet, const float _dt);
+static void bullet_move(bullet *const _bullet, const float _dt);
 
 // Воспроизведение звука.
-static void play_sound(Mix_Chunk *const _sound);
+static void sound_play(Mix_Chunk *const _sound);
 
 // Обрабатывает игрока - его движение, перезарядку, стрельбу, сбор ремонтных наборов.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void processing_player(const Uint8 *const _keys, const float _dt)
+void player_processing(const Uint8 *const _keys, const float _dt)
 {
     if (_keys == NULL)
     {
-        crash("processing_player(), _keys == NULL");
+        crash("player_processing(), _keys == NULL");
     }
 
     // Обрабатываем управление игроком.
-    control_player(_keys);
+    player_control(_keys);
 
     // Обрабатываем передвижение игрока.
-    move_tank(&player, _dt);
+    tank_move(&player, _dt);
 
     // Обрабатываем перезарядку игрока.
-    recharge_tank(&player, _dt);
+    tank_recharge(&player, _dt);
 
     // Обрабатываем стрельбу игрока.
-    shoot_player(_keys);
+    player_shoot(_keys);
 
     // Обрабатываем сбор ремонтных наборов игроком.
-    repair_tank(&player);
+    tank_repair(&player);
 }
 
 // Обрабатывает врагов - их движение, перезарядку, стрельбу, сбор ремонтных наборов.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void processing_enemies(const float _dt)
+void enemies_processing(const float _dt)
 {
     if (enemies_count > 0)
     {
@@ -107,19 +107,19 @@ void processing_enemies(const float _dt)
             if (enemies[e].active == 1)
             {
                 // Обрабатываем управление врагом.
-                control_enemy(&enemies[e]);
+                enemy_control(&enemies[e]);
 
                 // Обрабатываем передвижение врага.
-                move_tank(&enemies[e], _dt);
+                tank_move(&enemies[e], _dt);
 
                 // Обрабатываем перезарядку врага.
-                recharge_tank(&enemies[e], _dt);
+                tank_recharge(&enemies[e], _dt);
 
                 // Обрабатываем стрельбу врага.
-                shoot_enemy(&enemies[e]);
+                enemy_shoot(&enemies[e]);
 
                 // Обрабатываем сбор ремонтных наборов врагом.
-                repair_tank(&enemies[e]);
+                tank_repair(&enemies[e]);
             }
         }
     }
@@ -127,7 +127,7 @@ void processing_enemies(const float _dt)
 
 // Обрабатывает пули (движение и попадания).
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void processing_bullets(const float _dt)
+void bullets_processing(const float _dt)
 {
     if (bullets_count > 0)
     {
@@ -136,10 +136,10 @@ void processing_bullets(const float _dt)
             if (bullets[b].active == 1)
             {
                 // Обрабатываем попадание пули.
-                hit_bullet(&bullets[b]);
+                bullet_hit(&bullets[b]);
 
                 // Обрабатываем движение пули.
-                move_bullet(&bullets[b], _dt);
+                bullet_move(&bullets[b], _dt);
             }
         }
     }
@@ -147,7 +147,7 @@ void processing_bullets(const float _dt)
 
 // Обрабатывает эффекты.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void processing_effects(const float _dt)
+void effects_processing(const float _dt)
 {
     if (effects_count > 0)
     {
@@ -171,11 +171,11 @@ void processing_effects(const float _dt)
 
 // Обрабатывает движение танка к его цели.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void move_tank(tank *const _tank, const float _dt)
+void tank_move(tank *const _tank, const float _dt)
 {
     if (_tank == NULL)
     {
-        crash("move_tank(), _tank == NULL");
+        crash("tank_move(), _tank == NULL");
     }
 
     // Разность между x и tx танка.
@@ -284,11 +284,11 @@ void move_tank(tank *const _tank, const float _dt)
 
 // Обрабатывает перезарядку танка.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void recharge_tank(tank *const _tank, const float _dt)
+void tank_recharge(tank *const _tank, const float _dt)
 {
     if (_tank == NULL)
     {
-        crash("recharge_tank(), _tank == NULL");
+        crash("tank_recharge(), _tank == NULL");
     }
 
     // Перезарядка оружия.
@@ -303,11 +303,11 @@ void recharge_tank(tank *const _tank, const float _dt)
 
 // Контролирует игрока (выбор цели для движения).
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void control_player(const Uint8 *const _keys)
+void player_control(const Uint8 *const _keys)
 {
     if (_keys == NULL)
     {
-        crash("control_player(), не задан массив состояний кнопок");
+        crash("player_control(), не задан массив состояний кнопок");
     }
 
     // Разность x и tx игрока.
@@ -328,9 +328,6 @@ void control_player(const Uint8 *const _keys)
         // Определяем клетку, в которой находится игрок.
         const size_t cx = player.x / SPRITE_SIZE + 0.5f;
         const size_t cy = player.y / SPRITE_SIZE + 0.5f;
-
-        // Контроль значения cx.
-        // ...
 
         if (_keys[SDL_SCANCODE_A] == 1)
         {
@@ -389,11 +386,11 @@ void control_player(const Uint8 *const _keys)
 
 // Контролирует стрельбу игрока.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void shoot_player(const Uint8 *const _keys)
+void player_shoot(const Uint8 *const _keys)
 {
     if (_keys == NULL)
     {
-        crash("shoot_player(), _keys == NULL");
+        crash("player_shoot(), _keys == NULL");
     }
 
     // Если орудие игрока перезарядилось.
@@ -409,8 +406,7 @@ void shoot_player(const Uint8 *const _keys)
             }
 
             // Добавляем пулю (не учитываем сложение скоростей).
-            add_bullet(&player,
-                       O_PLAYER);
+            bullet_add(&player, O_PLAYER);
 
             // Начинаем перезарядку.
             player.c = SHOT_CD;
@@ -420,11 +416,11 @@ void shoot_player(const Uint8 *const _keys)
 
 // Контролирует врага (выбор цели для движения).
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void control_enemy(tank *const _enemy)
+void enemy_control(tank *const _enemy)
 {
     if (_enemy == NULL)
     {
-        crash("control_enemy(), _enemy == NULL");
+        crash("enemy_control(), _enemy == NULL");
     }
 
     // Определяем, в какой клетке находится враг.
@@ -535,7 +531,7 @@ void control_enemy(tank *const _enemy)
                 }
                 default:
                 {
-                    crash("control_enemy(), неизвестное направление движения при выборе целевой клетки\n_enemy->d: %i",
+                    crash("enemy_control(), неизвестное направление движения при выборе целевой клетки\n_enemy->d: %i",
                           _enemy->d);
                 }
             }
@@ -546,11 +542,11 @@ void control_enemy(tank *const _enemy)
 
 // Контролирует стрельбу врага.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void shoot_enemy(tank *const _enemy)
+void enemy_shoot(tank *const _enemy)
 {
     if (_enemy == NULL)
     {
-        crash("shoot_enemy(), _enemy == NULL");
+        crash("enemy_shoot(), _enemy == NULL");
     }
 
     // Если орудие врага перезарядилось.
@@ -678,7 +674,7 @@ void shoot_enemy(tank *const _enemy)
             }
             default:
             {
-                crash("shoot_enemy(), неизвестное направление при прицеливании в игрока\n_enemy->d: %i",
+                crash("enemy_shoot(), неизвестное направление при прицеливании в игрока\n_enemy->d: %i",
                       _enemy->d);
             }
         }
@@ -687,8 +683,7 @@ void shoot_enemy(tank *const _enemy)
         if (fire == 1)
         {
             // Добавляем пулю (не учитываем сложение скоростей).
-            add_bullet(_enemy,
-                       O_ENEMY);
+            bullet_add(_enemy, O_ENEMY);
 
             _enemy->c = SHOT_CD;
         }
@@ -696,7 +691,7 @@ void shoot_enemy(tank *const _enemy)
 }
 
 // Сбрасывает состояние игрока в изначальное.
-void reset_player(void)
+void player_reset(void)
 {
     player.hp = MAX_HEALTH;
     player.speed = TANK_SPEED;
@@ -709,7 +704,7 @@ void reset_player(void)
 }
 
 // Сбрасывает состояние врагов.
-void reset_enemies(void)
+void enemies_reset(void)
 {
     for (size_t e = 0; e < MAX_ENEMIES; ++e)
     {
@@ -719,7 +714,7 @@ void reset_enemies(void)
 }
 
 // Сбрасывает состояние пуль.
-void reset_bullets(void)
+void bullets_reset(void)
 {
     for (size_t b = 0; b < MAX_BULLETS; ++b)
     {
@@ -729,24 +724,24 @@ void reset_bullets(void)
 }
 
 // Сбрасывает состояние карты.
-void reset_map(void)
+void map_reset(void)
 {
     memcpy(map, map_template, sizeof(cell_state) * MAP_WIDTH * MAP_HEIGHT);
 }
 
 //Сбрасывает счет.
-void reset_score(void)
+void score_reset(void)
 {
     score = 0;
 }
 
 // Обрабатывает попадание пули в игрока, врагов и стены.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void hit_bullet(bullet *const _bullet)
+void bullet_hit(bullet *const _bullet)
 {
     if (_bullet == NULL)
     {
-        crash("hit_bullet(), _bullet == NULL");
+        crash("bullet_hit(), _bullet == NULL");
     }
 
     switch (_bullet->owner)
@@ -772,11 +767,9 @@ void hit_bullet(bullet *const _bullet)
                             score += 10;
 
                             // Добавляем эффект дыма.
-                            add_effect_smoke(_bullet->x,
-                                             _bullet->y);
+                            effect_add_smoke(_bullet->x, _bullet->y);
                             // Добавляем эффект вспышки.
-                            add_effect_flush(_bullet->x,
-                                             _bullet->y);
+                            effect_add_flush(_bullet->x, _bullet->y);
 
                             // Деактивируем пулю.
                             _bullet->active = 0;
@@ -792,19 +785,19 @@ void hit_bullet(bullet *const _bullet)
                                 score += 100;
 
                                 // Добавляем взрыв.
-                                add_effects_tank_explode(&enemies[e]);
+                                effect_add_explode(&enemies[e]);
 
                                 // Вырубаем врага.
                                 enemies[e].active = 0;
                                 // Уменьшаем счетчик врагов.
                                 --enemies_count;
                                 // Создаем двух новых.
-                                add_enemy();
-                                add_enemy();
+                                enemy_add();
+                                enemy_add();
                             }
 
                             // Воспроизводим звук попадания во врага.
-                            play_sound(sound_hit_to_enemy);
+                            sound_play(sound_hit_to_enemy);
 
                             return;
                         }
@@ -824,11 +817,9 @@ void hit_bullet(bullet *const _bullet)
                  (dis_y <= SPRITE_SIZE / 3) )
             {
                 // Добавляем эффект дыма.
-                add_effect_smoke(_bullet->x,
-                                 _bullet->y);
+                effect_add_smoke(_bullet->x, _bullet->y);
                 // Добавляем эффект вспышки.
-                add_effect_flush(_bullet->x,
-                                 _bullet->y);
+                effect_add_flush(_bullet->x, _bullet->y);
                 // Деактивируем пулю.
                 _bullet->active = 0;
                 // Уменьшаем счетчик пуль.
@@ -842,11 +833,11 @@ void hit_bullet(bullet *const _bullet)
                     player.hp = 0;
 
                     // Добавляем взрыв.
-                    add_effects_tank_explode(&player);
+                    effect_add_explode(&player);
                 }
 
                 // Воспроизводим звук попадания в игрока.
-                play_sound(sound_hit_to_player);
+                sound_play(sound_hit_to_player);
 
                 return;
             }
@@ -854,7 +845,7 @@ void hit_bullet(bullet *const _bullet)
         }
         default:
         {
-            crash("hit_bullet(), владелец пули неизвестен\n_bullet->owner: %i",
+            crash("bullet_hit(), владелец пули неизвестен\n_bullet->owner: %i",
                   _bullet->owner);
         }
     }
@@ -869,27 +860,27 @@ void hit_bullet(bullet *const _bullet)
     if (map[cx][cy] == CS_WALL)
     {
         // Добавляем эффект дыма.
-        add_effect_smoke(_bullet->x,
+        effect_add_smoke(_bullet->x,
                          _bullet->y);
         // Добавляем эффект вспышки.
-        add_effect_flush(_bullet->x,
+        effect_add_flush(_bullet->x,
                          _bullet->y);
         // Деактивируем пулю.
         _bullet->active = 0;
         // Уменьшаем счетчик пуль.
         --bullets_count;
         // Воспроизводим звук попадания в стену.
-        play_sound(sound_hit_to_wall);
+        sound_play(sound_hit_to_wall);
     }
 }
 
 // Обрабатывает перемещение пули.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void move_bullet(bullet *const _bullet, const float _dt)
+void bullet_move(bullet *const _bullet, const float _dt)
 {
     if (_bullet == NULL)
     {
-        crash("move_bullet(), _bullet == NULL");
+        crash("bullet_move(), _bullet == NULL");
     }
 
     const float value = BULLET_SPEED * _dt;
@@ -917,7 +908,7 @@ void move_bullet(bullet *const _bullet, const float _dt)
         }
         default:
         {
-            crash("move_bullet(), неизвестное направление движения пули\n_bullet->d: %i",
+            crash("bullet_move(), неизвестное направление движения пули\n_bullet->d: %i",
                   _bullet->d);
         }
     }
@@ -925,7 +916,7 @@ void move_bullet(bullet *const _bullet, const float _dt)
 
 // Добавляет (активирует) нового врага.
 // В случае ошибки показывает причину отказа и крашит программу.
-void add_enemy(void)
+void enemy_add(void)
 {
     if (enemies_count == MAX_ENEMIES)
     {
@@ -992,7 +983,7 @@ void add_enemy(void)
 
 // Добавляет (активирует) новую пулю.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void add_bullet(const tank *const _tank,
+void bullet_add(const tank *const _tank,
                 const owner _owner)
 {
     if (bullets_count == MAX_BULLETS)
@@ -1036,7 +1027,7 @@ void add_bullet(const tank *const _tank,
                 }
                 default:
                 {
-                    crash("add_bullet(), неизвестное направление выстрела");
+                    crash("bullet_add(), неизвестное направление выстрела");
                 }
             }
 
@@ -1050,10 +1041,10 @@ void add_bullet(const tank *const _tank,
             ++bullets_count;
 
             // Добавляем эффект дыма из точки вылета пули.
-            add_effect_smoke(x, y);
+            effect_add_smoke(x, y);
 
             // Воспроизводим звук выстрела.
-            play_sound(sound_shot);
+            sound_play(sound_shot);
 
             break;
         }
@@ -1063,11 +1054,11 @@ void add_bullet(const tank *const _tank,
 // Контролирует сбор ремонтных наборов танком.
 // Набор собирается только в том случае, если танк поврежден.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void repair_tank(tank *const _tank)
+static void tank_repair(tank *const _tank)
 {
     if (_tank == NULL)
     {
-        crash("repair_tank(), _tank == NULL");
+        crash("tank_repair(), _tank == NULL");
     }
 
     if (_tank->hp == MAX_HEALTH)
@@ -1089,16 +1080,16 @@ static void repair_tank(tank *const _tank)
             _tank->hp = MAX_HEALTH;
         }
         // Добавляем эффект захвата.
-        add_effect_capture(cx * SPRITE_SIZE,
+        effect_add_capture(cx * SPRITE_SIZE,
                            cy * SPRITE_SIZE);
 
         // Воспроизводим звук захвата.
-        play_sound(sound_repair);
+        sound_play(sound_repair);
     }
 }
 
 // Сбрасывает все эффекты.
-void reset_effects(void)
+void effects_reset(void)
 {
     for (size_t e = 0; e < MAX_EFFECTS; ++e)
     {
@@ -1109,32 +1100,32 @@ void reset_effects(void)
 
 // Добавляет эффект.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void add_effect(const float _x,
-                       const float _y,
-                       const float _angle,
-                       const float _alpha,// [0; 255]
-                       const float _d_angle,
-                       const float _d_alpha,// >= 0
-                       const SDL_Texture *const _texture)
+void effect_add(const float _x,
+                const float _y,
+                const float _angle,
+                const float _alpha,// [0; 255]
+                const float _d_angle,
+                const float _d_alpha,// >= 0
+                SDL_Texture *const _texture)
 {
     if (_alpha < 0)
     {
-        crash("add_effect(), _alpha < 0.f\n_alpha: %f",
+        crash("effect_add(), _alpha < 0.f\n_alpha: %f",
               _alpha);
     }
     if (_alpha > 255)
     {
-        crash("add_effect(), _alpha > 255.f\n_alpha: %f",
+        crash("effect_add(), _alpha > 255.f\n_alpha: %f",
               _alpha);
     }
     if (_d_alpha < 0.f)
     {
-        crash("add_effect(), _d_alpha < 0.f\n_d_alpha: %f",
+        crash("effect_add(), _d_alpha < 0.f\n_d_alpha: %f",
               _d_alpha);
     }
     if (_texture == NULL)
     {
-        crash("add_effect(), _texture == NULL");
+        crash("effect_add(), _texture == NULL");
     }
 
     if (effects_count == MAX_EFFECTS)
@@ -1158,7 +1149,7 @@ static void add_effect(const float _x,
             effects[e].d_angle = _d_angle;
             effects[e].d_alpha = _d_alpha;
 
-            effects[e].texture = (SDL_Texture*)_texture;
+            effects[e].texture = _texture;
 
             return;
         }
@@ -1167,10 +1158,10 @@ static void add_effect(const float _x,
 
 // Добавляет эффект дыма.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void add_effect_smoke(const float _x,
+static void effect_add_smoke(const float _x,
                              const float _y)
 {
-    add_effect(_x,
+    effect_add(_x,
                _y,
                rand() % 360,
                255,
@@ -1181,10 +1172,10 @@ static void add_effect_smoke(const float _x,
 
 // Добавляет эффект вспышки.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void add_effect_flush(const float _x,
+void effect_add_flush(const float _x,
                       const float _y)
 {
-    add_effect(_x,
+    effect_add(_x,
                _y,
                rand() % 360,
                255,
@@ -1195,10 +1186,10 @@ void add_effect_flush(const float _x,
 
 // Добавляет эффект захватывания.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void add_effect_capture(const float _x,
-                               const float _y)
+void effect_add_capture(const float _x,
+                        const float _y)
 {
-    add_effect(_x,
+    effect_add(_x,
                _y,
                rand() % 360,
                255,
@@ -1209,7 +1200,7 @@ static void add_effect_capture(const float _x,
 
 // Добавляет эффекты взрыва танка.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-void add_effects_tank_explode(const tank *const _tank)
+void effect_add_explode(const tank *const _tank)
 {
     if (_tank == NULL)
     {
@@ -1219,27 +1210,27 @@ void add_effects_tank_explode(const tank *const _tank)
     const float bias = SPRITE_SIZE / 4;
 
     // Добавляем эффекты дыма
-    add_effect_smoke(_tank->x,
+    effect_add_smoke(_tank->x,
                      _tank->y);
-    add_effect_smoke(_tank->x + bias,
+    effect_add_smoke(_tank->x + bias,
                      _tank->y - bias);
-    add_effect_smoke(_tank->x - bias,
+    effect_add_smoke(_tank->x - bias,
                      _tank->y - bias);
-    add_effect_smoke(_tank->x + bias,
+    effect_add_smoke(_tank->x + bias,
                      _tank->y + bias);
-    add_effect_smoke(_tank->x - bias,
+    effect_add_smoke(_tank->x - bias,
                      _tank->y + bias);
 
     // Добавляем эффекты вспышки.
-    add_effect_flush(_tank->x,
+    effect_add_flush(_tank->x,
                      _tank->y);
-    add_effect_flush(_tank->x + bias,
+    effect_add_flush(_tank->x + bias,
                      _tank->y - bias);
-    add_effect_flush(_tank->x - bias,
+    effect_add_flush(_tank->x - bias,
                      _tank->y - bias);
-    add_effect_flush(_tank->x + bias,
+    effect_add_flush(_tank->x + bias,
                      _tank->y + bias);
-    add_effect_flush(_tank->x - bias,
+    effect_add_flush(_tank->x - bias,
                      _tank->y + bias);
 }
 
@@ -1254,13 +1245,13 @@ int player_is_dead(void)
 }
 
 // Сбрасывает занавес.
-void reset_curtain(void)
+void curtain_reset(void)
 {
     curtain = 0.f;
 }
 
 // Обрабатывает занавес.
-void processing_curtain(const float _dt)
+void curtain_processing(const float _dt)
 {
     curtain += _dt * CURTAIN_SPEED;
     if (curtain >= 255.f)
@@ -1282,11 +1273,11 @@ int curtain_is_max(void)
 
 // Воспроизводит звук.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void play_sound(Mix_Chunk *const _sound)
+void sound_play(Mix_Chunk *const _sound)
 {
     if (_sound == NULL)
     {
-        crash("play_sound(), _sound == NULL");
+        crash("sound_play(), _sound == NULL");
     }
 
     // Возвращает -1 непонятно в какой ситуации.
@@ -1295,5 +1286,4 @@ static void play_sound(Mix_Chunk *const _sound)
         crash("Не удалось воспроизвести звук.\nMix_GetError() : %s",
               Mix_GetError());
     }
-    //Mix_PlayChannel(-1, _sound, 0);
 }

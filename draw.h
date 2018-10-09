@@ -9,29 +9,29 @@
 #include "cell.h"
 #include "text.h"
 
-void draw_player(void);
+void player_draw(void);
 
-void draw_enemies(void);
+void enemies_draw(void);
 
-void draw_map(const cell_state _state);
+void map_draw(const cell_state _state);
 
-void draw_bullets(void);
+void bullets_draw(void);
 
-void draw_text(const char *const _text,
+void text_draw(const char *const _text,
                const int _x,
                const int _y,
                const text_align _align);
 
-void draw_indicators(void);
+void indicators_draw(void);
 
-void draw_effects(void);
+void effects_draw(void);
 
-void draw_score(void);
+void score_draw(void);
 
-void draw_hello(void);
+void hello_draw(void);
 
-void draw_curtain(void);
+void curtain_draw(void);
 
-void draw_statistics(void);
+void statistics_draw(void);
 
 #endif

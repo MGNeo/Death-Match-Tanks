@@ -86,21 +86,21 @@ void game(void)
             case(0):
             {
                 // Рисуем приветствие.
-                draw_hello();
+                hello_draw();
 
                 // Нажатие Enter запускает сцену с боем.
                 if (keys[SDL_SCANCODE_RETURN] == 1)
                 {
                     // Инициализируем бой.
-                    reset_player();
-                    reset_enemies();
-                    reset_bullets();
-                    reset_map();
-                    reset_effects();
-                    reset_score();
+                    player_reset();
+                    enemies_reset();
+                    bullets_reset();
+                    map_reset();
+                    effects_reset();
+                    score_reset();
 
                     for (size_t i = 0; i < 8; ++i)
-                    add_enemy();
+                    enemy_add();
 
                     // Включаем сцену боя.
                     scene = 1;
@@ -111,29 +111,29 @@ void game(void)
             // Сцена боя.
             case(1):
             {
-                draw_map(CS_WALL);
-                draw_map(CS_WATER);
-                draw_map(CS_REPAIR);
+                map_draw(CS_WALL);
+                map_draw(CS_WATER);
+                map_draw(CS_REPAIR);
 
-                processing_player(keys, dt);
-                processing_enemies(dt);
-                processing_bullets(dt);
-                processing_effects(dt);
+                player_processing(keys, dt);
+                enemies_processing(dt);
+                bullets_processing(dt);
+                effects_processing(dt);
 
-                draw_player();
-                draw_enemies();
-                draw_bullets();
-                draw_effects();
+                player_draw();
+                enemies_draw();
+                bullets_draw();
+                effects_draw();
 
-                draw_indicators();
-                draw_map(CS_TREE);
-                draw_score();
+                indicators_draw();
+                map_draw(CS_TREE);
+                score_draw();
 
                 // Если игрока убили.
                 if (player_is_dead() == 1)
                 {
                     scene = 2;
-                    reset_curtain();
+                    curtain_reset();
                 }
                 break;
             }
@@ -141,22 +141,22 @@ void game(void)
             // Сцена смерти игрока (время остановилось, все угасает).
             case(2):
             {
-                draw_map(CS_WALL);
-                draw_map(CS_WATER);
-                draw_map(CS_REPAIR);
+                map_draw(CS_WALL);
+                map_draw(CS_WATER);
+                map_draw(CS_REPAIR);
 
-                draw_enemies();
-                draw_bullets();
-                draw_effects();
+                enemies_draw();
+                bullets_draw();
+                effects_draw();
 
-                draw_indicators();
-                draw_map(CS_TREE);
-                draw_score();
+                indicators_draw();
+                map_draw(CS_TREE);
+                score_draw();
 
                 // Обрабатываем занавес.
-                processing_curtain(dt);
+                curtain_processing(dt);
                 // Рисуем занавес.
-                draw_curtain();
+                curtain_draw();
 
                 // Если занавес опустился, переходим к сцене со статистикой.
                 if (curtain_is_max())
@@ -169,21 +169,21 @@ void game(void)
             // Сцена статистики.
             case (3):
             {
-                draw_statistics();
+                statistics_draw();
 
                 // Нажатие Enter запускает сцену с боем.
                 if (keys[SDL_SCANCODE_RETURN] == 1)
                 {
                     // Инициализируем бой.
-                    reset_player();
-                    reset_enemies();
-                    reset_bullets();
-                    reset_map();
-                    reset_effects();
-                    reset_score();
+                    player_reset();
+                    enemies_reset();
+                    bullets_reset();
+                    map_reset();
+                    effects_reset();
+                    score_reset();
 
                     for (size_t i = 0; i < 8; ++i)
-                    add_enemy();
+                    enemy_add();
 
                     // Включаем сцену боя.
                     scene = 1;
