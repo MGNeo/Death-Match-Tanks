@@ -4,4 +4,4 @@
 void crash(const char *const _str,
            ...);
 
-#endif // CRASH_H
+#endif

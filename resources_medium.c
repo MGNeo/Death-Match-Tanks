@@ -99,12 +99,14 @@ void init_system(void)
     }
 
     // Инициализация SDL_mixer.
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 128) != 0)
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 128) != 0)
     {
-        crash("init_system(), не удалось инициализировать SDL_mixer\nMix_OpenAudio() !=0\nMix_GetError() : %s",
+        crash("init_system(), не удалось инициализировать SDL_mixer\nMix_OpenAudio() != 0\nMix_GetError() : %s",
               Mix_GetError());
     }
 
+    // Установим количество смешиваемых каналов.
+    Mix_AllocateChannels(128);
     // Создание окна.
     window = SDL_CreateWindow("Death Match Tanks",
                               0,

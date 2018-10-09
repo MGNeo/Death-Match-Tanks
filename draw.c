@@ -111,15 +111,7 @@ void draw_map(const cell_state _state)
                 rect.x = x * SPRITE_SIZE;
                 rect.y = y * SPRITE_SIZE;
 
-                const int r_code = SDL_RenderCopyEx(renderer,
-                                                    texture,
-                                                    NULL,
-                                                    &rect,
-                                                    0,
-                                                    NULL,
-                                                    SDL_FLIP_NONE);
-
-                if (r_code != 0)
+                if (SDL_RenderCopyEx(renderer, texture, NULL, &rect, 0, NULL, SDL_FLIP_NONE) != 0)
                 {
                     crash("map_draw(), не удалось отрендерить текстуру\nSDL_GetError() : %s",
                           SDL_GetError());
@@ -149,9 +141,7 @@ void draw_bullets(void)
             rect.x = bullets[b].x + 0.5f;
             rect.y = bullets[b].y + 0.5f;
 
-            const int r_code = SDL_RenderCopy(renderer, texture_bullet, NULL,
-                                              &rect);
-            if (r_code != 0)
+            if (SDL_RenderCopy(renderer, texture_bullet, NULL, &rect) != 0)
             {
                 crash("bullets_draw(), не удалось отрисовать пулю\nSDL_GetError() : %s",
                       SDL_GetError());
@@ -204,7 +194,11 @@ void draw_text(const char *const _text,
                 {
                     rect.h = glyphs[glyph_index].h;
                     rect.w = glyphs[glyph_index].w;
-                    SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect);
+                    if (SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect) != 0)
+                    {
+                        crash("draw_text(), SDL_RenderCopy() != 0\nSDL_GetError() : %s",
+                              SDL_GetError());
+                    }
 
                     rect.x += glyphs[glyph_index].w;
                 }
@@ -231,8 +225,11 @@ void draw_text(const char *const _text,
 
                     rect.x -= glyphs[glyph_index].w;
 
-// Контролировать успешность вывода.
-                    SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect);
+                    if (SDL_RenderCopy(renderer, glyphs[glyph_index].texture, NULL, &rect) != 0)
+                    {
+                        crash("draw_text(), SDL_RenderCopy() != 0\nSDL_GetError() : %s",
+                              SDL_GetError());
+                    }
                 }
             }
 
@@ -358,9 +355,7 @@ void draw_tank(const tank *const _tank, SDL_Texture *const _texture)
 
     const double angle = _tank->d * 90;
 
-    const int r_code = SDL_RenderCopyEx(renderer, _texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
-
-    if (r_code != 0)
+    if (SDL_RenderCopyEx(renderer, _texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE) != 0)
     {
         crash("Не удалось отрисовать танк\nSDL_GetError() : %s",
               SDL_GetError());
@@ -430,7 +425,11 @@ void draw_effects(void)
             rect.x = effects[e].x;
             rect.y = effects[e].y;
 
-            SDL_SetTextureAlphaMod(effects[e].texture, effects[e].alpha + 0.5f);
+            if (SDL_SetTextureAlphaMod(effects[e].texture, effects[e].alpha + 0.5f) != 0)
+            {
+                crash("draw_effects(), SDL_SetTextureAlphaMod() != 0\nSDL_GetError() % s",
+                      SDL_GetError());
+            }
 
             if (SDL_RenderCopyEx(renderer,
                                  effects[e].texture,
@@ -452,7 +451,11 @@ void draw_effects(void)
 void draw_score(void)
 {
     char text[1024];
-    sprintf(text, "Score: %Iu", score);
+    if (sprintf(text, "Очки: %Iu", score) < 0)
+    {
+        crash("draw_score(), sprintf() < 0\nerrno() : %i",
+              errno);
+    }
 
     draw_text(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 44, TA_CENTER);
 }
@@ -468,7 +471,11 @@ void draw_hello(void)
 
     char text[1024];
 
-    sprintf(text, "Для начала боя нажмите \"Enter\", для выхода нажмите \"Escape\"");
+    if (sprintf(text, "Для начала боя нажмите \"Enter\", для выхода нажмите \"Escape\"") < 0)
+    {
+        crash("draw_hello(), sprintf() < 0\nerrno() : %i",
+              errno);
+    }
     draw_text(text,
               SCREEN_WIDTH / 2,
               SCREEN_HEIGHT - 64,
@@ -485,8 +492,11 @@ void draw_curtain(void)
     rect.w = SCREEN_WIDTH;
     rect.h = SCREEN_HEIGHT;
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, curtain);
-
+    if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, curtain) != 0)
+    {
+        crash("draw_curtain(), не удалось установить цвет заливки занавеса\nSDL_GetError() : %s",
+              SDL_GetError());
+    }
 
     if (SDL_RenderFillRect(renderer, &rect) != 0)
     {
@@ -500,10 +510,18 @@ void draw_curtain(void)
 void draw_statistics(void)
 {
     char text[1024];
-    sprintf(text, "Ваш результат: %Iu", score);
+    if (sprintf(text, "Ваш результат: %Iu", score) < 0)
+    {
+        crash("draw_statistics(), sprintf() < 0\nerrno() : %i",
+              errno);
+    }
     draw_text(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 22, TA_CENTER);
 
-    sprintf(text, "Для начала боя нажмите \"Enter\", для выхода нажмите \"Escape\"");
+    if (sprintf(text, "Для начала боя нажмите \"Enter\", для выхода нажмите \"Escape\"") < 0)
+    {
+        crash("draw_statistics(), sprintf() < 0\nerrno() : %i",
+              errno);
+    }
     draw_text(text,
               SCREEN_WIDTH / 2,
               SCREEN_HEIGHT - 64,

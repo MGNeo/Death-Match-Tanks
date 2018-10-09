@@ -540,3 +540,196 @@
 1538974278 source:c:\users\nb529\desktop\death match tanks 08.10.2018\score.c
 	"score.h"
 
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\bullets.c
+	"bullets.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\bullets.h
+	<stdlib.h>
+	"direction.h"
+	"owner.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\direction.h
+
+1539059654 c:\users\nb529\desktop\death match tanks 09.10.2018\owner.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\crash.c
+	<windows.h>
+	<stdlib.h>
+	<stdio.h>
+	"crash.h"
+
+1539059603 c:\users\nb529\desktop\death match tanks 09.10.2018\crash.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\curtain.c
+	"curtain.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\curtain.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\effects.c
+	"effects.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\effects.h
+	<stdlib.h>
+	<SDL.h>
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\enemies.c
+	"enemies.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\enemies.h
+	<stdlib.h>
+	"tank.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\tank.h
+	"direction.h"
+
+1539062198 source:c:\users\nb529\desktop\death match tanks 09.10.2018\game.c
+	<SDL_timer.h>
+	<time.h>
+	<stdlib.h>
+	"SDL.h"
+	"game.h"
+	"crash.h"
+	"resources_low.h"
+	"processing.h"
+	"draw.h"
+	"player.h"
+	"screen.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\game.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\resources_low.h
+	"SDL.h"
+	"SDL_mixer.h"
+	"glyph.h"
+	"map.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\glyph.h
+	"SDL.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\map.h
+	"cell.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\cell.h
+
+1539062198 c:\users\nb529\desktop\death match tanks 09.10.2018\processing.h
+	<SDL.h>
+	"direction.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\draw.h
+	"cell.h"
+	"text.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\text.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\player.h
+	"tank.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\screen.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\main.c
+	<stdlib.h>
+	<stdio.h>
+	"resources_high.h"
+	"game.h"
+	<windows.h>
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\resources_high.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\map.c
+	"map.h"
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\player.c
+	<math.h>
+	"player.h"
+
+1539063022 source:c:\users\nb529\desktop\death match tanks 09.10.2018\processing.c
+	<math.h>
+	<stdlib.h>
+	<memory.h>
+	"processing.h"
+	"player.h"
+	"enemies.h"
+	"bullets.h"
+	"map.h"
+	"sprite.h"
+	"health.h"
+	"speed.h"
+	"damage.h"
+	"cooldown.h"
+	"resources_low.h"
+	"crash.h"
+	"repair.h"
+	"owner.h"
+	"effects.h"
+	"score.h"
+	"curtain.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\sprite.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\health.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\speed.h
+	"sprite.h"
+
+1539063446 c:\users\nb529\desktop\death match tanks 09.10.2018\damage.h
+
+1539063446 c:\users\nb529\desktop\death match tanks 09.10.2018\cooldown.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\repair.h
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\score.h
+	<stdlib.h>
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_high.c
+	<stdlib.h>
+	<stddef.h>
+	<limits.h>
+	"resources_high.h"
+	"resources_medium.h"
+	"crash.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.h
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_low.c
+	"resources_low.h"
+
+1539061888 source:c:\users\nb529\desktop\death match tanks 09.10.2018\resources_medium.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL_ttf.h>
+	<windows.h>
+	<string.h>
+	<locale.h>
+	"screen.h"
+	"resources_medium.h"
+	"resources_low.h"
+	"crash.h"
+
+1538963306 source:c:\users\nb529\desktop\death match tanks 09.10.2018\score.c
+	"score.h"
+
+1539059377 source:c:\users\nb529\desktop\death match tanks 09.10.2018\draw.c
+	<stdlib.h>
+	<SDL.h>
+	<string.h>
+	<stdio.h>
+	"resources_low.h"
+	"draw.h"
+	"player.h"
+	"enemies.h"
+	"map.h"
+	"bullets.h"
+	"sprite.h"
+	"text.h"
+	"crash.h"
+	"indicator.h"
+	"health.h"
+	"effects.h"
+	"cooldown.h"
+	"score.h"
+	"screen.h"
+	"curtain.h"
+
+1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\indicator.h
+	"sprite.h"
+

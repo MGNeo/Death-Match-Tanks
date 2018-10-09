@@ -6,6 +6,6 @@
 #ifndef DAMAGE_H
 #define DAMAGE_H
 
-#define DAMAGE 10
+#define DAMAGE 24
 
 #endif

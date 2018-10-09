@@ -67,8 +67,9 @@ static void shoot_enemy(tank *const _enemy);
 static void hit_bullet(bullet *const _bullet);
 // Обработка движения пули.
 static void move_bullet(bullet *const _bullet, const float _dt);
+
 // Воспроизведение звука.
-static void sound_play(Mix_Chunk *const _sound);
+static void play_sound(Mix_Chunk *const _sound);
 
 // Обрабатывает игрока - его движение, перезарядку, стрельбу, сбор ремонтных наборов.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
@@ -152,8 +153,7 @@ void processing_effects(const float _dt)
     {
         for (size_t e = 0; e < MAX_EFFECTS; ++e)
         {
-            if (effects[e].active ==
-                1)
+            if (effects[e].active == 1)
             {
                 effects[e].angle += _dt * effects[e].d_angle;
                 effects[e].alpha -= _dt * effects[e].d_alpha;
@@ -804,7 +804,7 @@ void hit_bullet(bullet *const _bullet)
                             }
 
                             // Воспроизводим звук попадания во врага.
-                            sound_play(sound_hit_to_enemy);
+                            play_sound(sound_hit_to_enemy);
 
                             return;
                         }
@@ -846,7 +846,7 @@ void hit_bullet(bullet *const _bullet)
                 }
 
                 // Воспроизводим звук попадания в игрока.
-                sound_play(sound_hit_to_player);
+                play_sound(sound_hit_to_player);
 
                 return;
             }
@@ -879,7 +879,7 @@ void hit_bullet(bullet *const _bullet)
         // Уменьшаем счетчик пуль.
         --bullets_count;
         // Воспроизводим звук попадания в стену.
-        sound_play(sound_hit_to_wall);
+        play_sound(sound_hit_to_wall);
     }
 }
 
@@ -1050,11 +1050,10 @@ void add_bullet(const tank *const _tank,
             ++bullets_count;
 
             // Добавляем эффект дыма из точки вылета пули.
-            add_effect_smoke(x,
-                             y);
+            add_effect_smoke(x, y);
 
             // Воспроизводим звук выстрела.
-            sound_play(sound_shot);
+            play_sound(sound_shot);
 
             break;
         }
@@ -1094,7 +1093,7 @@ static void repair_tank(tank *const _tank)
                            cy * SPRITE_SIZE);
 
         // Воспроизводим звук захвата.
-        sound_play(sound_repair);
+        play_sound(sound_repair);
     }
 }
 
@@ -1208,16 +1207,6 @@ static void add_effect_capture(const float _x,
                texture_capture);
 }
 
-// Если игрок убит, возвращат 1, иначе 0.
-int player_is_dead(void)
-{
-    if (player.hp <= 0)
-    {
-        return 1;
-    }
-    return 0;
-}
-
 // Добавляет эффекты взрыва танка.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
 void add_effects_tank_explode(const tank *const _tank)
@@ -1254,6 +1243,16 @@ void add_effects_tank_explode(const tank *const _tank)
                      _tank->y + bias);
 }
 
+// Если игрок убит, возвращат 1, иначе 0.
+int player_is_dead(void)
+{
+    if (player.hp <= 0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
 // Сбрасывает занавес.
 void reset_curtain(void)
 {
@@ -1283,18 +1282,18 @@ int curtain_is_max(void)
 
 // Воспроизводит звук.
 // В случае ошибки показывает информацию о причине сбоя и крашит программу.
-static void sound_play(Mix_Chunk *const _sound)
+static void play_sound(Mix_Chunk *const _sound)
 {
     if (_sound == NULL)
     {
-        crash("sound_play(), _sound == NULL");
+        crash("play_sound(), _sound == NULL");
     }
 
     // Возвращает -1 непонятно в какой ситуации.
-    /*if (Mix_PlayChannel(-1, _sound, 0) == -1)
+    if (Mix_PlayChannel(-1, _sound, 0) == -1)
     {
         crash("Не удалось воспроизвести звук.\nMix_GetError() : %s",
               Mix_GetError());
-    }*/
-    Mix_PlayChannel(-1, _sound, 0);
+    }
+    //Mix_PlayChannel(-1, _sound, 0);
 }
