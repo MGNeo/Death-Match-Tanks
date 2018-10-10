@@ -1280,7 +1280,6 @@ void sound_play(Mix_Chunk *const _sound)
         crash("sound_play(), _sound == NULL");
     }
 
-    // Возвращает -1 непонятно в какой ситуации.
     if (Mix_PlayChannel(-1, _sound, 0) == -1)
     {
         crash("Не удалось воспроизвести звук.\nMix_GetError() : %s",
