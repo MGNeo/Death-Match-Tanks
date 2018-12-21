@@ -10,7 +10,7 @@
 
 #define MAX_SCALE 4
 
-#define MAX_EFFECTS 5 * 1024
+#define MAX_EFFECTS 5000
 
 typedef struct s_effect
 {
