@@ -733,3 +733,193 @@
 1538963306 c:\users\nb529\desktop\death match tanks 09.10.2018\indicator.h
 	"sprite.h"
 
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\bullets.c
+	"bullets.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\bullets.h
+	<stdlib.h>
+	"direction.h"
+	"owner.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\direction.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\owner.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\crash.c
+	<windows.h>
+	<stdlib.h>
+	<stdio.h>
+	"crash.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\crash.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\curtain.c
+	"curtain.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\curtain.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\draw.c
+	<stdlib.h>
+	<SDL.h>
+	<string.h>
+	<stdio.h>
+	"resources_low.h"
+	"draw.h"
+	"player.h"
+	"enemies.h"
+	"map.h"
+	"bullets.h"
+	"sprite.h"
+	"text.h"
+	"crash.h"
+	"indicator.h"
+	"health.h"
+	"effects.h"
+	"cooldown.h"
+	"score.h"
+	"screen.h"
+	"curtain.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\resources_low.h
+	"SDL.h"
+	"SDL_mixer.h"
+	"glyph.h"
+	"map.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\glyph.h
+	"SDL.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\map.h
+	"cell.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\cell.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\draw.h
+	"cell.h"
+	"text.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\text.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\player.h
+	"tank.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\tank.h
+	"direction.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\enemies.h
+	<stdlib.h>
+	"tank.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\sprite.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\indicator.h
+	"sprite.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\health.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\effects.h
+	<stdlib.h>
+	<SDL.h>
+
+1545373841 c:\users\nb529\desktop\death-match-tanks-master\cooldown.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\score.h
+	<stdlib.h>
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\screen.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\effects.c
+	"effects.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\enemies.c
+	"enemies.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\game.c
+	<SDL_timer.h>
+	<time.h>
+	<stdlib.h>
+	"SDL.h"
+	"game.h"
+	"crash.h"
+	"resources_low.h"
+	"processing.h"
+	"draw.h"
+	"player.h"
+	"screen.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\game.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\processing.h
+	<SDL.h>
+	"direction.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\main.c
+	"resources_high.h"
+	"game.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\resources_high.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\map.c
+	"map.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\player.c
+	<math.h>
+	"player.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\processing.c
+	<math.h>
+	<stdlib.h>
+	<memory.h>
+	"processing.h"
+	"player.h"
+	"enemies.h"
+	"bullets.h"
+	"map.h"
+	"sprite.h"
+	"health.h"
+	"speed.h"
+	"damage.h"
+	"cooldown.h"
+	"resources_low.h"
+	"crash.h"
+	"repair.h"
+	"owner.h"
+	"effects.h"
+	"score.h"
+	"curtain.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\speed.h
+	"sprite.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\damage.h
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\repair.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\resources_high.c
+	<stdlib.h>
+	<stddef.h>
+	<limits.h>
+	"resources_high.h"
+	"resources_medium.h"
+	"crash.h"
+
+1545330478 c:\users\nb529\desktop\death-match-tanks-master\resources_medium.h
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\resources_low.c
+	"resources_low.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\resources_medium.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL_ttf.h>
+	<windows.h>
+	<string.h>
+	<locale.h>
+	"screen.h"
+	"resources_medium.h"
+	"resources_low.h"
+	"crash.h"
+
+1545330478 source:c:\users\nb529\desktop\death-match-tanks-master\score.c
+	"score.h"
+

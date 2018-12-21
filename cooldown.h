@@ -6,6 +6,6 @@
 #ifndef COOLDOWN_H
 #define COOLDOWN_H
 
-#define SHOT_CD 0.25
+#define SHOT_CD 3
 
 #endif
