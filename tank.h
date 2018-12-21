@@ -29,9 +29,6 @@ typedef struct s_tank
     // Прошлая клетка, имеет значение только для танков врагов.
     float ox;
     float oy;
-
-
-
 } tank;
 
 #endif
