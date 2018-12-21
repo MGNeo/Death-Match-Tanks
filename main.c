@@ -1,10 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "resources_high.h"
 #include "game.h"
-
-#include <windows.h>
 
 int main(int argc, char **argv)
 {
