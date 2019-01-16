@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "crash.h"
-#include <stdarg.h>
 
 #define MAX_MESSAGE_SIZE 4096
 
