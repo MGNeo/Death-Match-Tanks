@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "crash.h"
+#include <stdarg.h>
 
 #define MAX_MESSAGE_SIZE 4096
 
@@ -11,24 +12,37 @@
 void crash(const char *const _str,
            ...)
 {
+    // Если имеется сообщение для показа.
     if ( (_str != NULL) && (strlen(_str) > 0) )
     {
-        char message[MAX_MESSAGE_SIZE];
+        char message[MAX_MESSAGE_SIZE + 1];
 
-        // Формируем сообщение.
+        // Если длина сформированной строки (без учета нультерминатора) окажется
+        // равна заданному пределу, то функция vsnprintf() не ставит нультерминатор,
+        // поэтому ставим его заранее, на всякий случай.
+        message[MAX_MESSAGE_SIZE] = 0;
+
+        // Попытаемся сформировать сообщение с информацией об отказе.
         va_list args;
         va_start(args, _str);
+        const int r_code = _vsnprintf(message, MAX_MESSAGE_SIZE, _str, args);
+        va_end(args);
 
-        const int r_code = vsprintf(message, _str, args);
+        // Отказ _vsprintf().
         if (r_code < 0)
         {
+            MessageBox(NULL,
+                       "Невозможно сформировать сообщение с информацией об ошибке, отказ _vsnprintf()",
+                       "Ожидаемая критическая ошибка",
+                       MB_ICONSTOP);
             goto END;
         }
 
-        va_end(args);
-
         // Показываем сообщение.
-        MessageBox(NULL, message, "Ожидаемая критическая ошибка", MB_ICONSTOP);
+        MessageBox(NULL,
+                   message,
+                   "Ожидаемая критическая ошибка",
+                   MB_ICONSTOP);
     }
 
     END:
