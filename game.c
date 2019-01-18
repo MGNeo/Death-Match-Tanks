@@ -31,7 +31,8 @@ void game(void)
     // Задаем настройки смешивания.
     if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
     {
-        crash("game(), не удалось установить режим смешивания");
+        crash("game(), не удалось установить режим смешивания\nSDLGetError() : %s",
+              SDL_GetError());
     }
 
     // Флаг выхода.
