@@ -28,13 +28,6 @@ void game(void)
     // Доступ должен осуществляться после цикла обработки событий.
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
-    // Задаем настройки смешивания.
-    if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
-    {
-        crash("game(), не удалось установить режим смешивания\nSDLGetError() : %s",
-              SDL_GetError());
-    }
-
     // Флаг выхода.
     size_t quit = 0;
     // Событие.

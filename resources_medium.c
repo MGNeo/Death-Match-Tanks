@@ -126,6 +126,13 @@ void system_init(void)
         crash("system_init(), не удалось создать рендер\nSDL_GetError() : %s",
               SDL_GetError());
     }
+
+    // Задаем настройки смешивания.
+    if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
+    {
+        crash("game(), не удалось установить режим смешивания\nSDLGetError() : %s",
+              SDL_GetError());
+    }
 }
 
 // Загружает шрифт.
