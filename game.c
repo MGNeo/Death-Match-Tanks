@@ -1,7 +1,7 @@
 #include <SDL_timer.h>
 #include <time.h>
 #include <stdlib.h>
-#include "SDL.h"
+#include <SDL.h>
 #include "game.h"
 #include "crash.h"
 #include "resources_low.h"
