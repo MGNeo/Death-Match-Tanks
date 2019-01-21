@@ -168,16 +168,16 @@ void font_load(void)
                                                1,
                                                unicode_char,
                                                1);
-        if (unicode_char[1] != 0)
-        {
-            crash("font_load(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
-                  ansi_char);
-        }
-
         if (r_code != 1)
         {
             crash("font_load(), не удалось преобразовать символ из cp1251 в unicode\nGetLastError() : %lu",
                   GetLastError());
+        }
+      
+        if (unicode_char[1] != 0)
+        {
+            crash("font_load(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
+                  ansi_char);
         }
 
         // Отрендерим символ в поверхность.
