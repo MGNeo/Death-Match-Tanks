@@ -278,7 +278,7 @@ void text_draw(const char *const _text,
         }
         default:
         {
-            crash("Для отрисовки текста задано неизвестное выравнивание");
+            crash("text_draw(), для отрисовки текста задано неизвестное выравнивание");
             break;
         }
     }
