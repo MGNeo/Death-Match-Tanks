@@ -165,10 +165,10 @@ void text_draw(const char *const _text,
 
     const size_t text_length = strlen(_text);
 
-    if (text_length == 0)
+    /*if (text_length == 0)
     {
         return;
-    }
+    }*/
 
     if (text_length > MAX_TEXT_LENGTH)
     {
