@@ -17,23 +17,23 @@ static void texture_load(const char *const _file_name,
 {
     if (_file_name == NULL)
     {
-        crash("textures_load(), _file_name == NULL");
+        crash("texture_load(), _file_name == NULL");
     }
 
     if (strlen(_file_name) == 0)
     {
-        crash("textures_load(), strlen(_file_name) == 0");
+        crash("texture_load(), strlen(_file_name) == 0");
     }
 
     if (_texture == NULL)
     {
-        crash("textures_load(), _texture == NULL");
+        crash("texture_load(), _texture == NULL");
     }
 
     SDL_Surface *h_surface = SDL_LoadBMP(_file_name);
     if (h_surface == NULL)
     {
-        crash("textures_load(), не удалось создать поверхность на основе файла: %s\nSDL_GetError() : %s",
+        crash("texture_load(), не удалось создать поверхность на основе файла: %s\nSDL_GetError() : %s",
               _file_name,
               SDL_GetError());
     }
@@ -41,7 +41,7 @@ static void texture_load(const char *const _file_name,
     SDL_Texture *h_texture = SDL_CreateTextureFromSurface(renderer, h_surface);
     if (h_texture == NULL)
     {
-        crash("textures_load(), не удалось создать текстуру на основе поверхности\nSDL_GetError() : %s",
+        crash("texture_load(), не удалось создать текстуру на основе поверхности\nSDL_GetError() : %s",
               SDL_GetError());
     }
 
@@ -143,14 +143,14 @@ void font_load(void)
     static size_t again = 0;
     if (again++ != 0)
     {
-        crash("system_init(), произошла попытка повторной загрузки шрифта");
+        crash("font_load(), произошла попытка повторной загрузки шрифта");
     }
 
     // Загрузим шрифт.
     TTF_Font *h_font = TTF_OpenFont("font/font.ttf", 22);
     if (h_font == NULL)
     {
-        crash("system_init(), не удалось загрузить шрифт\nTTF_GetError() : %s",
+        crash("font_load(), не удалось загрузить шрифт\nTTF_GetError() : %s",
               TTF_GetError());
     }
 
@@ -170,13 +170,13 @@ void font_load(void)
                                                1);
         if (unicode_char[1] != 0)
         {
-            crash("system_init(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
+            crash("font_load(), при конвертации ANSI символа [%c] получилась суррогатная пара UTF16-LE, а не единственный 16-ти битный символ",
                   ansi_char);
         }
 
         if (r_code != 1)
         {
-            crash("system_init(), не удалось преобразовать символ из cp1251 в unicode\nGetLastError() : %lu",
+            crash("font_load(), не удалось преобразовать символ из cp1251 в unicode\nGetLastError() : %lu",
                   GetLastError());
         }
 
@@ -199,7 +199,7 @@ void font_load(void)
             SDL_Texture *h_texture = SDL_CreateTextureFromSurface(renderer, h_surface);
             if (h_texture == NULL)
             {
-                crash("system_init(), не удалось создать текстуру на основе поверхности с символом\nSDL_GetError() : %s",
+                crash("font_load(), не удалось создать текстуру на основе поверхности с символом\nSDL_GetError() : %s",
                       SDL_GetError());
             }
 
