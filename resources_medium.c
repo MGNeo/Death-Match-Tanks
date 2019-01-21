@@ -212,6 +212,8 @@ void font_load(void)
             SDL_FreeSurface(h_surface);
         }
     }
+  
+  TTF_CloseFont(h_font);
 }
 
 // Загружает все необходимые текстуры.
